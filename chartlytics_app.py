@@ -1,14 +1,12 @@
-
 import streamlit as st
 import pandas as pd
 import openai
 import os
 
-# Настройка OpenAI API
+# Установка API-ключа
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 st.set_page_config(page_title="ChartLytics — AI Аналитик", layout="wide")
-
 st.title("ChartLytics — Умный анализ Excel-файлов")
 
 uploaded_file = st.file_uploader("Загрузи Excel-файл", type=["xlsx", "xls"])
@@ -22,14 +20,12 @@ if uploaded_file:
         if st.button("Проанализировать"):
             with st.spinner("Анализируем..."):
                 preview = df.head(20).to_string(index=False)
-                prompt = f"Вот первые строки Excel-таблицы:\n{preview}\n\nПроанализируй, как опытный аналитик: найди закономерности, аномалии, важные показатели. Предложи, какие отчёты и графики можно построить, как будто ты помощник в бизнес-аналитике."
+                prompt = f"""Вот первые строки Excel-таблицы:\n{preview}\n\nПроанализируй как бизнес-аналитик: найди закономерности, проблемы, интересные факты. Предложи, что можно построить (графики, отчёты) и какие выводы можно сделать."""
 
-                response = openai.ChatCompletion.create(
+                client = openai.OpenAI()
+                response = client.chat.completions.create(
                     model="gpt-4",
-                    messages=[{
-                        "role": "user",
-                        "content": prompt
-                    }],
+                    messages=[{"role": "user", "content": prompt}],
                     temperature=0.7
                 )
 
