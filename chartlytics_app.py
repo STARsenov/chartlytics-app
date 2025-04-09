@@ -25,18 +25,18 @@ if uploaded_files:
         ext = Path(uploaded_file.name).suffix.lower()
         try:
             if ext in [".xlsx", ".xls"]:
-                df = pd.read_excel(uploaded_file, skiprows=0)
-                st.subheader(f"Таблица: {uploaded_file.name}")
-                st.dataframe(df.head(20))
-                all_contents += f"Данные из Excel файла {uploaded_file.name}:
+    df = pd.read_excel(uploaded_file, skiprows=0)
+    st.subheader(f"Таблица: {uploaded_file.name}")
+    st.dataframe(df.head(20))
+    all_contents += f"""Данные из Excel файла {uploaded_file.name}:
 {df.head(20).to_string(index=False)}
 
-"
-            elif ext == ".pdf":
-                pdf_text = read_pdf(uploaded_file)
-                st.subheader(f"PDF файл: {uploaded_file.name}")
-                st.text_area("Содержимое PDF", pdf_text[:1000])
-                all_contents += f"Данные из PDF файла {uploaded_file.name}:
+"""
+elif ext == ".pdf":
+    pdf_text = read_pdf(uploaded_file)
+    st.subheader(f"PDF файл: {uploaded_file.name}")
+    st.text_area("Содержимое PDF", pdf_text[:1000])
+    all_contents += f"""Данные из PDF файла {uploaded_file.name}:
 {pdf_text[:2000]}
 
 "
