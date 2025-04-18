@@ -57,3 +57,18 @@ if uploaded_files:
             )
             st.markdown("### Ответ Чаги:")
             st.write(response.choices[0].message.content)
+user_input = st.text_input("Ответь Чаги, если хочешь продолжить:")
+
+if user_input:
+    messages = [
+        {"role": "system", "content": "Ты - ИИ-аналитик Чаги из ChartLytics 2.5"},
+        {"role": "assistant", "content": previous_response},
+        {"role": "user", "content": user_input}
+    ]
+    follow_up = openai.chat.completions.create(
+        model="gpt-4",
+        messages=messages,
+        temperature=0.7
+    )
+    st.markdown("### Продолжение Чаги:")
+    st.write(follow_up.choices[0].message.content)
