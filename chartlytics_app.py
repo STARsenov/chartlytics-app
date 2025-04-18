@@ -56,15 +56,13 @@ if uploaded_files:
                 temperature=0.7
             )
             st.markdown("### Ответ Чаги:")
-            st.write(response.choices[0].message.content)
+            result = response.choices[0].message.content
+            st.write(result)
 
-st.markdown("### Ответ Чаги:")
-result = response.choices[0].message.content
-st.write(result)
+            # Сохраняем ответ в сессию для дальнейшего диалога
+            st.session_state["previous_response"] = result
 
-# Сохраняем ответ в сессию для дальнейшего диалога
-st.session_state["previous_response"] = result
-
+# Вне загрузки — только чат:
 user_input = st.text_input("Ответь Чаги, если хочешь продолжить:")
 
 if user_input and "previous_response" in st.session_state:
