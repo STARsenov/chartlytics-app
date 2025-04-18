@@ -57,12 +57,20 @@ if uploaded_files:
             )
             st.markdown("### Ответ Чаги:")
             st.write(response.choices[0].message.content)
+
+st.markdown("### Ответ Чаги:")
+result = response.choices[0].message.content
+st.write(result)
+
+# Сохраняем ответ в сессию для дальнейшего диалога
+st.session_state["previous_response"] = result
+
 user_input = st.text_input("Ответь Чаги, если хочешь продолжить:")
 
-if user_input:
+if user_input and "previous_response" in st.session_state:
     messages = [
-        {"role": "system", "content": "Ты - ИИ-аналитик Чаги из ChartLytics 2.5"},
-        {"role": "assistant", "content": previous_response},
+        {"role": "system", "content": "Ты — ИИ-аналитик по имени Чаги из проекта ChartLytics 2.5. Ты уже дал начальный анализ и теперь продолжаешь диалог."},
+        {"role": "assistant", "content": st.session_state["previous_response"]},
         {"role": "user", "content": user_input}
     ]
     follow_up = openai.chat.completions.create(
