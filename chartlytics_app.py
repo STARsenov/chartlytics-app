@@ -30,10 +30,11 @@ if uploaded_files:
                 df = pd.read_excel(uploaded_file)
                 st.subheader(f"Excel Preview — {uploaded_file.name}")
                 st.dataframe(df.head(20))
-                full_context += f"Data from Excel {uploaded_file.name}:
+full_context += f"""Data from Excel {uploaded_file.name}:
 {df.head(20).to_string(index=False)}
 
-"
+"""
+
             elif ext == ".pdf":
                 reader = PyPDF2.PdfReader(uploaded_file)
                 pdf_text = "".join([p.extract_text() or "" for p in reader.pages])
