@@ -1,6 +1,7 @@
-
+pandas
 streamlit
 pandas
 openai
 PyPDF2
 openpyxl
+xlrd
