@@ -25,15 +25,16 @@ if uploaded_files:
     full_context = ""
     for uploaded_file in uploaded_files:
         ext = Path(uploaded_file.name).suffix.lower()
-        try:
-            if ext in [".xlsx", ".xls"]:
-                df = pd.read_excel(uploaded_file)
-                st.subheader(f"Excel Preview — {uploaded_file.name}")
-                st.dataframe(df.head(20))
-full_context += f"""Data from Excel {uploaded_file.name}:
+try:
+    df = pd.read_excel(uploaded_file, skiprows=0)
+    st.subheader(f"Table: {uploaded_file.name}")
+    st.dataframe(df.head(20))
+    full_context += f"""Data from Excel {uploaded_file.name}:
 {df.head(20).to_string(index=False)}
 
 """
+except Exception as e:
+    st.error(f"Error processing {uploaded_file.name}: {e}")
 
             elif ext == ".pdf":
                 reader = PyPDF2.PdfReader(uploaded_file)
